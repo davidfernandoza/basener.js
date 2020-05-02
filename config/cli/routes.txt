@@ -1,0 +1,100 @@
+'use strict'
+const { Router } = require('express')
+
+/*
+ * Rutas de los #2:
+ */
+
+module.exports = ({
+	#2Controller,
+	#2Request,
+	AuthMiddleware,
+	AdminPolitics,
+	BasicPolitics	
+}) => {
+	const router = Router()
+
+	/*
+	 * Request:
+	 */
+	const requestPrivate = #2Request.private.bind(#2Request)
+	const requestPublic = #2Request.public.bind(#2Request)
+
+	/*
+	 * Politics:
+	 */
+	const politics = [
+		AdminPolitics.validate.bind(AdminPolitics),
+		BasicPolitics.validate.bind(BasicPolitics)
+	]
+
+	/*
+	 * Middlewares:
+	 */
+	const auth = AuthMiddleware.compare.bind(AuthMiddleware)
+
+
+	/*
+	 * Controller:
+	 */
+	const controller = #2Controller
+	
+	/*
+	 * -----------------------------------------------------------------------------------*
+	 * GET:
+	 */
+	router.get(
+		'/',
+		requestPublic,
+		auth,
+		politics,
+		controller.getAll.bind(controller)
+	)
+
+	router.get(
+		'/:id',
+		requestPrivate,
+		auth,
+		politics,
+		controller.get.bind(controller)
+	)
+
+	/*
+	 * -----------------------------------------------------------------------------------*
+	 * POST:
+	 */
+	router.post(
+		'/',
+		requestPrivate,
+		auth,
+		politics,
+		controller.create.bind(controller)
+	)
+
+	/*
+	 * -----------------------------------------------------------------------------------*
+	 * PUT:
+	 */
+	router.put(
+		'/',
+		requestPrivate,
+		auth,
+		politics,
+		controller.update.bind(controller)
+	)
+
+
+	/*
+	 * -----------------------------------------------------------------------------------*
+	 * DELETE:
+	 */
+	router.delete(
+		'/',
+		requestPrivate,
+		auth,
+		politics,
+		controller.delete.bind(controller)
+	)
+
+	return router
+}
