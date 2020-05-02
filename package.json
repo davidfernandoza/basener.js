@@ -31,12 +31,13 @@
     "morgan": "^1.10.0",
     "morphism": "^1.12.3",
     "pg": "^7.18.1",
+    "pug": "^2.0.4",
     "sequelize": "^5.21.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-no-private-class-fields": "github:brianjenkins94/eslint-plugin-no-private-class-fields",
-    "nodemon": "^2.0.2"    
+    "nodemon": "^2.0.2"
   }
 }

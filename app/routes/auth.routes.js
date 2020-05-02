@@ -2,7 +2,12 @@
 
 const { Router } = require('express')
 
-module.exports = ({ UsersAuth, AuthRequest, TokenAuth }) => {
+module.exports = ({
+	AuthRequest,
+	ForgotPasswordController,
+	TokenAuth,
+	UsersAuth
+}) => {
 	/*
 	 * Rutas de las autentificaciones:
 	 * -------------------------
@@ -10,15 +15,16 @@ module.exports = ({ UsersAuth, AuthRequest, TokenAuth }) => {
 	 */
 	const requestPublic = AuthRequest.public.bind(AuthRequest)
 	const user = UsersAuth
+	const forgotPassword = ForgotPasswordController
 	const token = TokenAuth
 	const router = Router()
 	router.post('/login', requestPublic, user.login.bind(user))
 	router.post('/logout', requestPublic, token.delete.bind(token))
-	// router.post(
-	// 	'/forgot-password',
-	// 	requestPublic,
-	// 	user.forgotPassword.bind(UsersAuth)
-	// )
+	router.post(
+		'/forgot-password',
+		requestPublic,
+		forgotPassword.create.bind(forgotPassword)
+	)
 
 	return router
 }

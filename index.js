@@ -1,6 +1,6 @@
 'use strict'
 const { join } = require('path')
-const container = require(join(__dirname, './api/container'))
+const container = require(join(__dirname, './app/container'))
 const app = container.resolve('App')
 const config = container.resolve('Config')
 

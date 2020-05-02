@@ -9,6 +9,7 @@ const JoiValidator = require('@hapi/joi')
 const StartUp = require(join(__dirname, './startup'))
 const Server = require(join(__dirname, './server'))
 const Routes = require(join(__dirname, './routes'))
+const RoutesWeb = require(join(__dirname, './routes/web'))
 const Config = require(join(__dirname, '../config/env'))
 const DB = require(join(__dirname, '../data/models'))
 const container = createContainer()
@@ -18,6 +19,18 @@ const container = createContainer()
 /*------------------------------------------------------*/
 const UsersRoutes = require(join(__dirname, './routes/users.routes'))
 const AuthRoutes = require(join(__dirname, './routes/auth.routes'))
+const ForgotPasswordRoutes = require(join(
+	__dirname,
+	'./routes/forgot-password.routes'
+))
+
+/* -----------------------------------------------------*/
+/* Routes Web: 																							*/
+/*------------------------------------------------------*/
+const ForgotPasswordWebRoutes = require(join(
+	__dirname,
+	'./routes/web/forgot-password.routes'
+))
 
 /* -----------------------------------------------------*/
 /* Middlewares: 																				*/
@@ -38,7 +51,7 @@ const { AdminPolitic, BasicPolitic } = require(join(
 /* -----------------------------------------------------*/
 /* Requests: 																						*/
 /*------------------------------------------------------*/
-const { UsersRequest, AuthRequest } = require(join(
+const { ForgotPasswordRequest, UsersRequest, AuthRequest } = require(join(
 	__dirname,
 	'./middlewares/requests'
 ))
@@ -51,20 +64,27 @@ const { UsersAuth, TokenAuth } = require(join(__dirname, './controllers/auth'))
 /* -----------------------------------------------------*/
 /* Controllers: 																				*/
 /*------------------------------------------------------*/
-const { UsersController } = require(join(__dirname, './controllers'))
+const { ForgotPasswordController, UsersController } = require(join(
+	__dirname,
+	'./controllers'
+))
 
 /* -----------------------------------------------------*/
 /* Repositories: 																				*/
 /*------------------------------------------------------*/
-const { UsersRepository, TokenBlackListRepository } = require(join(
-	__dirname,
-	'../data/repositories'
-))
+const {
+	ForgotPasswordRepository,
+	UsersRepository,
+	TokenBlackListRepository
+} = require(join(__dirname, '../data/repositories'))
 
 /* -----------------------------------------------------*/
 /* DTOS: 																								*/
 /*------------------------------------------------------*/
-const { UsersDto, TokenBlackListDto } = require(join(__dirname, '../dto'))
+const { ForgotPasswordDto, UsersDto, TokenBlackListDto } = require(join(
+	__dirname,
+	'../dto'
+))
 
 /* -----------------------------------------------------*/
 /* Services: 																						*/
@@ -90,11 +110,16 @@ container
 	 * Routes:
 	 */
 	.register({
-		Routes: asFunction(Routes).singleton()
+		Routes: asFunction(Routes).singleton(),
+		RoutesWeb: asFunction(RoutesWeb).singleton()
 	})
 	.register({
-		UsersRoutes: asFunction(UsersRoutes).singleton(),
-		AuthRoutes: asFunction(AuthRoutes).singleton()
+		AuthRoutes: asFunction(AuthRoutes).singleton(),
+		ForgotPasswordRoutes: asFunction(ForgotPasswordRoutes).singleton(),
+		UsersRoutes: asFunction(UsersRoutes).singleton()
+	})
+	.register({
+		ForgotPasswordWebRoutes: asFunction(ForgotPasswordWebRoutes).singleton()
 	})
 
 	/*
@@ -116,6 +141,7 @@ container
 	 * Controllers:
 	 */
 	.register({
+		ForgotPasswordController: asClass(ForgotPasswordController).singleton(),
 		UsersController: asClass(UsersController).singleton()
 	})
 
@@ -142,14 +168,16 @@ container
 		JoiValidator: asValue(JoiValidator)
 	})
 	.register({
-		UsersRequest: asClass(UsersRequest).singleton(),
-		AuthRequest: asClass(AuthRequest).singleton()
+		AuthRequest: asClass(AuthRequest).singleton(),
+		ForgotPasswordRequest: asClass(ForgotPasswordRequest).singleton(),
+		UsersRequest: asClass(UsersRequest).singleton()
 	})
 
 	/*
 	 * Repositories:
 	 */
 	.register({
+		ForgotPasswordRepository: asClass(ForgotPasswordRepository).singleton(),
 		UsersRepository: asClass(UsersRepository).singleton(),
 		TokenBlackListRepository: asClass(TokenBlackListRepository).singleton()
 	})
@@ -158,6 +186,7 @@ container
 	 * DTOS:
 	 */
 	.register({
+		ForgotPasswordDto: asClass(ForgotPasswordDto).singleton(),
 		UsersDto: asClass(UsersDto).singleton(),
 		TokenBlackListDto: asClass(TokenBlackListDto).singleton()
 	})

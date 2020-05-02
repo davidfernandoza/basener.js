@@ -39,38 +39,38 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	)
 
-	// users.associate = function (models) {
-	// 	/*
-	// 	 * Un users se registra en muchos table (1:M)
-	// 	 */
-	// 	models.users.hasMany(models.table, {
-	// 		foreignKey: 'users_id', // a donde va
-	// 		sourceKey: 'id', // de donde se obtiene
-	// 		as: 'table'
-	// 	})
+	users.associate = function (models) {
+		// 	/*
+		// 	 * Un users se registra en muchos table (1:M)
+		// 	 */
+		// 	models.users.hasMany(models.table, {
+		// 		foreignKey: 'users_id', // a donde va
+		// 		sourceKey: 'id', // de donde se obtiene
+		// 		as: 'table'
+		// 	})
 
-	// 	// Un users tiene un table (1:1)
-	// 	models.users.belongsTo(models.table, {
-	// 		foreignKey: 'table_id', // a donde llega
-	// 		targetKey: 'id', // de donde viene
-	// 		as: 'table'
-	// 	})
+		// 	// Un users tiene un table (1:1)
+		// 	models.users.belongsTo(models.table, {
+		// 		foreignKey: 'table_id', // a donde llega
+		// 		targetKey: 'id', // de donde viene
+		// 		as: 'table'
+		// 	})
 
-	// 	// Un users tiene muchas table (1:M)
-	// 	models.users.belongsToMany(models.table, {
-	// 		through: models.users_table, // Tabla pivote
-	// 		foreignKey: 'users_id', // a donde va
-	// 		sourceKey: 'id', // de donde se obtiene
-	// 		as: 'table'
-	// 	})
+		// 	// Un users tiene muchas table (1:M)
+		// 	models.users.belongsToMany(models.table, {
+		// 		through: models.users_table, // Tabla pivote
+		// 		foreignKey: 'users_id', // a donde va
+		// 		sourceKey: 'id', // de donde se obtiene
+		// 		as: 'table'
+		// 	})
 
-	// 	// Un users tiene un table (1:1)
-	// 	models.users.hasOne(models.table, {
-	// 		foreignKey: 'users_id', // a donde va
-	// 		sourceKey: 'id', // de donde se obtiene
-	// 		as: 'table'
-	// 	})
-	// }
+		// Un users le pertenece a un forgot_password (1:1)
+		models.users.hasOne(models.forgot_password, {
+			foreignKey: 'users_id', // a donde va
+			sourceKey: 'id', // de donde se obtiene
+			as: 'forgot_password-1'
+		})
+	}
 
 	return users
 }

@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
 			as: '#5-3'
 		})
 
-		// Un #3 tiene un #5 (1:1)
+		// Un #3 le pertenece a un #5 (1:1)
 		models.#3.hasOne(models.#5, {
 			foreignKey: '#3_id', // a donde va
 			sourceKey: 'id', // de donde se obtiene

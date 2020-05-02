@@ -6,7 +6,12 @@ const helmet = require('helmet')
 const { Router } = require('express')
 require('express-async-errors')
 
-module.exports = ({ ErrorHandleMiddleware, UsersRoutes, AuthRoutes }) => {
+module.exports = ({
+	AuthRoutes,
+	ErrorHandleMiddleware,
+	ForgotPasswordRoutes,
+	UsersRoutes
+}) => {
 	const router = Router()
 	const apiRoute = Router()
 
@@ -21,6 +26,7 @@ module.exports = ({ ErrorHandleMiddleware, UsersRoutes, AuthRoutes }) => {
 	// registrar las rutas
 	apiRoute.use('/auth', AuthRoutes)
 	apiRoute.use('/users', UsersRoutes)
+	apiRoute.use('/forgot-password', ForgotPasswordRoutes)
 	router.use('/api', apiRoute)
 
 	// Not Found 404

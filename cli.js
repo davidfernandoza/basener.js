@@ -5,9 +5,9 @@ const fs = require('fs')
 const moment = require('moment')
 const { join } = require('path')
 const cliFolder = './config/cli/'
-const requestFolder = './api/middlewares/requests/'
-const routesFolder = './api/routes/'
-const controllerFolder = './api/controllers/'
+const requestFolder = './app/middlewares/requests/'
+const routesFolder = './app/routes/'
+const controllerFolder = './app/controllers/'
 const migrationsFolder = './data/migrations/'
 const modelsFolder = './data/models/'
 const repositoryFolder = './data/repositories/'
@@ -88,12 +88,11 @@ function run(message) {
 					/*
 					 * Foreach para nombres compuestos
 					 */
-
-					await arrayName.forEach(async item_2 => {
-						nameClass += await capitalize(item_2)
+					arrayName.forEach(item_2 => {
+						nameClass += capitalize(item_2)
 					})
 
-					moduleName = await capitalize(item)
+					moduleName = capitalize(item)
 
 					// Ruta dependiendo del archivo a crear:
 					nameClassFull = nameClass + moduleName
@@ -185,8 +184,7 @@ function run(message) {
 										foreignKey_5 = keyValue[0].slice(0, -3)
 										objAtributes[keyValue[0]] = {
 											type: `|DataTypes.${keyValue[1].toUpperCase()}|`,
-											allowNull: false,
-											unique: true
+											allowNull: false
 										}
 
 										if (keyValue[1] == 'integer') {
