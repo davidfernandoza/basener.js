@@ -1,19 +1,28 @@
 'use strict'
 const express = require('express')
 const morgan = require('morgan')
+const handlebars = require('express-handlebars')
 
 class Server {
 	/*
 	 * Se le pasa las configuraciones de entorno y las rutas por DI
 	 * Monta el servidor con el metodo start.
 	 */
-	constructor({ Config, Routes, RoutesWeb }) {
+	constructor({ Config, RoutesApi, RoutesWeb }) {
 		this.config = Config
 		this.express = express()
 		this.express.use(morgan('dev'))
-		this.express.set('view engine', 'pug')
+		this.express.use(express.static('./public'))
+		this.express.engine(
+			'.hbs',
+			handlebars({
+				extname: '.hbs',
+				partialsDir: `${__dirname}/../views/layouts/partials`
+			})
+		)
+		this.express.set('view engine', '.hbs')
 		this.express.use(RoutesWeb)
-		this.express.use(Routes)
+		this.express.use(RoutesApi)
 	}
 
 	async start() {

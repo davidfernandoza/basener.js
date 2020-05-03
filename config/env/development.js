@@ -3,6 +3,7 @@
 module.exports = {
 	NODE_ENV: process.env.NODE_ENV,
 	PORT: process.env.PORT,
+	APP_NAME: process.env.APP_NAME,
 	CSRF_TOKEN: process.env.CSRF_TOKEN,
 	BASE_URL: process.env.BASE_URL,
 	BASE_API: process.env.BASE_API,

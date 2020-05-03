@@ -10,10 +10,13 @@ module.exports = ({
 	AuthRoutes,
 	ErrorHandleMiddleware,
 	ForgotPasswordRoutes,
-	UsersRoutes
+	UsersRoutes,
+	Config,
+	StringHelper
 }) => {
-	const router = Router()
+	const routers = Router()
 	const apiRoute = Router()
+	const app = StringHelper.capitalize(Config.APP_NAME)
 
 	// Parsear la peticion
 	apiRoute
@@ -27,15 +30,41 @@ module.exports = ({
 	apiRoute.use('/auth', AuthRoutes)
 	apiRoute.use('/users', UsersRoutes)
 	apiRoute.use('/forgot-password', ForgotPasswordRoutes)
-	router.use('/api', apiRoute)
+	routers.use('/api', apiRoute)
+
+	// Home
+	routers.use('/', (req, res, next) => {
+		const urlArray = req.path.split('/')
+		if (urlArray[1] == '') {
+			return res.render('home', {
+				title: 'Home',
+				app: app
+			})
+		} else {
+			next()
+		}
+	})
 
 	// Not Found 404
-	router.use(() => {
-		throw new Error('ERR404')
+	routers.use((req, res) => {
+		const urlArray = req.path.split('/')
+
+		// WEB
+		if (urlArray[1] != 'api') {
+			res.render('404', {
+				title: '404',
+				app: app,
+				base: `${Config.BASE_URL}:${Config.PORT}`
+			})
+		}
+		// API
+		else {
+			throw new Error('ERR404')
+		}
 	})
 
 	//  Manejador de errores
-	router.use(ErrorHandleMiddleware.index.bind(ErrorHandleMiddleware))
+	routers.use(ErrorHandleMiddleware.index.bind(ErrorHandleMiddleware))
 
-	return router
+	return routers
 }

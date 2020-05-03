@@ -15,6 +15,8 @@ class UsersController extends Controller {
 		req.body.password = await bcrypt.hash(password, salt)
 		return super.create(req, res)
 	}
+
+	
 }
 
 module.exports = UsersController

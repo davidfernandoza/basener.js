@@ -8,11 +8,16 @@ const { asClass, asFunction, asValue, createContainer } = require('awilix')
 const JoiValidator = require('@hapi/joi')
 const StartUp = require(join(__dirname, './startup'))
 const Server = require(join(__dirname, './server'))
-const Routes = require(join(__dirname, './routes'))
+const RoutesApi = require(join(__dirname, './routes'))
 const RoutesWeb = require(join(__dirname, './routes/web'))
 const Config = require(join(__dirname, '../config/env'))
 const DB = require(join(__dirname, '../data/models'))
 const container = createContainer()
+
+/* -----------------------------------------------------*/
+/* Helpers:																							*/
+/*------------------------------------------------------*/
+const { StringHelper } = require(join(__dirname, '../helpers'))
 
 /* -----------------------------------------------------*/
 /* Routes: 																							*/
@@ -27,9 +32,9 @@ const ForgotPasswordRoutes = require(join(
 /* -----------------------------------------------------*/
 /* Routes Web: 																							*/
 /*------------------------------------------------------*/
-const ForgotPasswordWebRoutes = require(join(
+const RecoverPasswordWebRoutes = require(join(
 	__dirname,
-	'./routes/web/forgot-password.routes'
+	'./routes/web/recover-password.routes'
 ))
 
 /* -----------------------------------------------------*/
@@ -110,7 +115,7 @@ container
 	 * Routes:
 	 */
 	.register({
-		Routes: asFunction(Routes).singleton(),
+		RoutesApi: asFunction(RoutesApi).singleton(),
 		RoutesWeb: asFunction(RoutesWeb).singleton()
 	})
 	.register({
@@ -119,7 +124,14 @@ container
 		UsersRoutes: asFunction(UsersRoutes).singleton()
 	})
 	.register({
-		ForgotPasswordWebRoutes: asFunction(ForgotPasswordWebRoutes).singleton()
+		RecoverPasswordWebRoutes: asFunction(RecoverPasswordWebRoutes).singleton()
+	})
+
+	/*
+	 * Helpers:
+	 */
+	.register({
+		StringHelper: asClass(StringHelper).singleton()
 	})
 
 	/*

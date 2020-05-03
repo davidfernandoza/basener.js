@@ -18,7 +18,8 @@ module.exports = ({ ForgotPasswordController }) => {
 	 * GET:
 	 */
 
-	router.get('/', controller.index.bind(controller))
+	router.get('/:token', controller.index.bind(controller))
+	router.post('/:token', controller.password.bind(controller))
 
 	return router
 }
