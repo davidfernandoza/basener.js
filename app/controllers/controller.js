@@ -6,12 +6,15 @@ const { DoneString } = require(join(__dirname, '../strings'))
 
 class Controller {
 	#doneString = null
+	#app = ''
 
-	constructor(EntityRepository, EntityDto, Config) {
+	constructor(EntityRepository, EntityDto, StringHelper, Config) {
 		this.entityRepository = EntityRepository
 		this.entityDto = EntityDto
+
 		if (Config) {
 			this.config = Config
+			this.#app = StringHelper.capitalize(Config.APP_NAME)
 		}
 
 		// Singleton manual
@@ -124,8 +127,14 @@ class Controller {
 				.send(this.#doneString.DON404)
 		}
 
+		// Respuesta WEB
+		if (code == 'OK') {
+			entity.app = this.#app
+			return res.render(entity.page, entity)
+		}
+
 		// Atributo OK
-		if (code == 'DON200' || code == 'DON201' || code == 'DON200L') {
+		else if (code == 'DON200' || code == 'DON201' || code == 'DON200L') {
 			addSubDto = !addSubDto ? null : addSubDto
 			const dto = !typeDto
 				? await this.entityDto.api(addSubDto)

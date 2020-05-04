@@ -8,8 +8,13 @@ const Controller = require(join(__dirname, '../controller'))
  * Crea un token en la lista negra con el antiguo token
  */
 class TokenAuth extends Controller {
-	constructor({ TokenBlackListRepository, TokenBlackListDto, JWTService }) {
-		super(TokenBlackListRepository, TokenBlackListDto)
+	constructor({
+		TokenBlackListRepository,
+		TokenBlackListDto,
+		JWTService,
+		StringHelper
+	}) {
+		super(TokenBlackListRepository, TokenBlackListDto, StringHelper)
 		this.JWTServices = JWTService
 		this.tokenBlackListRepository = TokenBlackListRepository
 	}

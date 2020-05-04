@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt')
 const Controller = require(join(__dirname, './controller'))
 
 class UsersController extends Controller {
-	constructor({ UsersRepository, UsersDto, Config }) {
-		super(UsersRepository, UsersDto, Config)
+	constructor({ UsersRepository, UsersDto, Config, StringHelper }) {
+		super(UsersRepository, UsersDto, StringHelper, Config)
 	}
 
 	async create(req, res) {
@@ -15,8 +15,6 @@ class UsersController extends Controller {
 		req.body.password = await bcrypt.hash(password, salt)
 		return super.create(req, res)
 	}
-
-	
 }
 
 module.exports = UsersController

@@ -3,8 +3,8 @@ const { join } = require('path')
 const Controller = require(join(__dirname, './controller'))
 
 class #1 extends Controller {
-	constructor({ #2Repository, #2Dto, Config }) {
-		super(#2Repository, #2Dto, Config)
+	constructor({ #2Repository, #2Dto, Config, StringHelper }) {
+		super(#2Repository, #2Dto, Config, StringHelper)
 	}
 	// Logica diferente al CRUD base aqui:
 }

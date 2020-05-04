@@ -8,7 +8,6 @@ require('express-async-errors')
 
 module.exports = ({
 	AuthRoutes,
-	ErrorHandleMiddleware,
 	ForgotPasswordRoutes,
 	UsersRoutes,
 	Config,
@@ -46,25 +45,19 @@ module.exports = ({
 	})
 
 	// Not Found 404
-	routers.use((req, res) => {
+	routers.use(req => {
 		const urlArray = req.path.split('/')
 
 		// WEB
 		if (urlArray[1] != 'api') {
-			res.render('404', {
-				title: '404',
-				app: app,
-				base: `${Config.BASE_URL}:${Config.PORT}`
-			})
+			throw new Error('404')
 		}
+
 		// API
 		else {
 			throw new Error('ERR404')
 		}
 	})
-
-	//  Manejador de errores
-	routers.use(ErrorHandleMiddleware.index.bind(ErrorHandleMiddleware))
 
 	return routers
 }

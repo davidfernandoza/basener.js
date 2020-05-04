@@ -1,13 +1,18 @@
+/* eslint-disable indent */
 'use strict'
 // const axios = require('axios')
 const { join } = require('path')
 const { ErrorString } = require(join(__dirname, '../strings'))
 let errorObject = {}
 let code = 'ERR500'
+let codeweb = '500'
 let detail = null
 
 class ErrorHandleMiddleware {
-	constructor({ Config }) {
+	#app = ''
+	#apiUrl = ''
+
+	constructor({ Config, StringHelper }) {
 		this.config = Config
 		this.errorString = new ErrorString()
 		this.optionAxios = {
@@ -17,13 +22,45 @@ class ErrorHandleMiddleware {
 				'Token-APP': Config.ERROR_HANDLER_TOKEN
 			}
 		}
-		this.apiUrl = Config.ERROR_HANDLER_API
+		this.#apiUrl = Config.ERROR_HANDLER_API
+		this.#app = StringHelper.capitalize(Config.APP_NAME)
 	}
 
 	async index(error, req, res, next) {
+		/*
+		 * Errores programados de api
+		 */
+		console.log(error.message)
+
 		if (error.message.length === 6) {
 			code = error.message
-		} else {
+		}
+
+		// Errores programados Web
+		else if (error.message.length === 3) {
+			const objetWeb = {
+				app: this.#app // Nombre de la aplicacion
+			}
+
+			switch (error.message) {
+				case '403':
+					codeweb = '403'
+					objetWeb.title = 'Forbidden'
+					break
+				case '404':
+					codeweb = '404'
+					objetWeb.title = 'Not Found'
+					break
+				default:
+					objetWeb.title = '500'
+					break
+			}
+
+			return res.render(codeweb, objetWeb)
+		}
+
+		// Errores no programados de api
+		else {
 			// Validacion de objeto
 			try {
 				const objError = JSON.parse(error.message)
@@ -65,7 +102,7 @@ class ErrorHandleMiddleware {
 			try {
 				console.error(error)
 
-				// await axios(this.apiUrl, this.optionAxios)
+				// await axios(this.#apiUrl, this.optionAxios)
 			} catch (error) {
 				error
 			}

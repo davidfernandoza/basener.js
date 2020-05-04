@@ -8,7 +8,7 @@ class Server {
 	 * Se le pasa las configuraciones de entorno y las rutas por DI
 	 * Monta el servidor con el metodo start.
 	 */
-	constructor({ Config, RoutesApi, RoutesWeb }) {
+	constructor({ Config, RoutesApi, RoutesWeb, ErrorHandleMiddleware }) {
 		this.config = Config
 		this.express = express()
 		this.express.use(morgan('dev'))
@@ -23,6 +23,9 @@ class Server {
 		this.express.set('view engine', '.hbs')
 		this.express.use(RoutesWeb)
 		this.express.use(RoutesApi)
+
+		//  Manejador de errores
+		this.express.use(ErrorHandleMiddleware.index.bind(ErrorHandleMiddleware))
 	}
 
 	async start() {

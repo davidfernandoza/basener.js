@@ -5,10 +5,8 @@ const compression = require('compression')
 const helmet = require('helmet')
 const { Router } = require('express')
 
-module.exports = ({ RecoverPasswordWebRoutes, Config, StringHelper }) => {
+module.exports = ({ RecoverPasswordWebRoutes }) => {
 	const router = Router()
-	const app = StringHelper.capitalize(Config.APP_NAME)
-
 	// registrar las rutas
 	router
 		.use(cors())
@@ -18,23 +16,6 @@ module.exports = ({ RecoverPasswordWebRoutes, Config, StringHelper }) => {
 		.use(compression())
 
 	router.use('/recover-password', RecoverPasswordWebRoutes)
-
-	// Respuesta ok
-	router.use('/ok', (req, res) => {
-		return res.render('ok', {
-			title: 'Ok',
-			app: app,
-			message: 'OK'
-		})
-	})
-
-	// Respuesta 500
-	router.use('/error', (req, res) => {
-		return res.render('500', {
-			title: '500',
-			app: app
-		})
-	})
 
 	return router
 }
