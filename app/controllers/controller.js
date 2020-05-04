@@ -105,10 +105,12 @@ class Controller {
 	async password(req, res) {
 		let { password } = req.body
 		const id = req.id
+		const transaction = !req.transaction ? null : req.transaction
 		const round = parseInt(this.config.SALT_CRYPT)
 		const salt = await bcrypt.genSalt(round)
 		password = await bcrypt.hash(password, salt)
 		const updated = await this.entityRepository.password(id, { password })
+		if (req.return || transaction) return updated
 		await this.response(res, updated, 'DON204', false)
 	}
 

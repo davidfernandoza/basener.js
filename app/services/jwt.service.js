@@ -9,23 +9,23 @@ class JWTService {
 		this.#config = Config
 	}
 
-	//  Metodo para crear el Token
-	async create(id, rol, token) {
+	//  Metodo para crear el token
+	async create(id, rol, secureToken) {
 		let payload
 
-		if (!id || !rol) return { status: 403, payload: null }
-		// Para la seguridad de WebHooks
-		else if (token) {
+		if (!id) return { status: 403, payload: null }
+		// Para la seguridad de WebHooks o de recuperacion de contraseñas
+		else if (secureToken) {
 			payload = {
 				sub: id,
-				rol: rol,
-				token: token,
+				token: secureToken,
 				iat: moment().unix(),
 				exp: moment().add(6, 'minutes').unix()
 			}
 		}
 		// seguridad de usuario
 		else {
+			if (!rol) return { status: 403, payload: null }
 			payload = {
 				sub: id,
 				rol: rol,
@@ -33,31 +33,42 @@ class JWTService {
 				exp: moment().add(7, 'days').unix()
 			}
 		}
-		const Token = jwt.encode(payload, this.#config.ENCRYPTION_KEY_TOKEN)
-		return { status: 200, payload: { token: Token } }
+		const token = jwt.encode(payload, this.#config.ENCRYPTION_KEY_TOKEN)
+		return { status: 200, payload: { token: token } }
 	}
 
-	// Metodo que decodifica el Token:
-	decode(Token) {
+	// Metodo que decodifica el token:
+	decode(token, type) {
 		try {
 			/*
-			 * status true -> no verifica la firma del Token
-			 * status false -> si verifica la firma del Token
+			 * status true -> no verifica la firma del token
+			 * status false -> si verifica la firma del token
 			 */
 			const payload = jwt.decode(
-				Token,
+				token,
 				this.#config.ENCRYPTION_KEY_TOKEN,
 				false
 			)
-			const data = {
-				id: payload.sub,
-				rol: payload.rol
+
+			type = !type ? 'auth' : type
+
+			let data = {}
+			if (type == 'auth') {
+				data = {
+					id: payload.sub,
+					rol: payload.rol
+				}
+			} else {
+				data = {
+					id: payload.sub,
+					token: payload.sub
+				}
 			}
 
 			data.token = !payload.token ? null : payload.token
 			return { status: 200, payload: data }
 		} catch (err) {
-			if (err.message == 'Token expired') {
+			if (err.message == 'token expired') {
 				return { status: 401, payload: null }
 			}
 			return { status: 403, payload: null }

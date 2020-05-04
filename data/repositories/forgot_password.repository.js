@@ -7,6 +7,18 @@ class ForgotPasswordRepository extends Repository {
 		super(DB, ForgotPasswordDto, Config, 'forgot_password')
 		this.db = DB
 	}
-	// Aqui van las consultas especializadas
+
+	async delete(token, transaction) {
+		try {
+			const result = await this.db[this.entity].destroy({
+				where: { token },
+				transaction: transaction
+			})
+			if (result == 0) return null
+			return result
+		} catch (error) {
+			await super.errorHandle(error)
+		}
+	}
 }
 module.exports = ForgotPasswordRepository

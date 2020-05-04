@@ -19,7 +19,7 @@ class UsersRequest extends Request {
 				.min(8)
 				.max(100)
 				.required(),
-			password: JoiValidator.string().min(8).max(225).required(),
+			password: JoiValidator.string().min(8).max(60).required(),
 			rol: JoiValidator.any().valid('ADMIN', 'BASIC').required(),
 			birthday: JoiValidator.date().required(),
 			range: JoiValidator.number().required(),
@@ -29,7 +29,10 @@ class UsersRequest extends Request {
 
 		// Reglas para el cambio de pasword
 		passwordRule = {
-			password: JoiValidator.string().min(8).max(45).required()
+			password: JoiValidator.string().min(8).max(60).required(),
+			confirmPassword: JoiValidator.any()
+				.valid(JoiValidator.ref('password'))
+				.required()
 		}
 
 		super(body, JoiValidator, Config.CSRF_TOKEN)
@@ -47,10 +50,10 @@ class UsersRequest extends Request {
 	}
 
 	async password(req, res, next) {
-		const header = await super.header(req)
+		const header = await super.header(req) // validacion de cabecera
 		if (header != true) await super.errorHandle(header)
 		else if (req.method != 'GET' && req.method != 'DELETE') {
-			const bodyRes = await super.body(req, passwordRule)
+			const bodyRes = await super.body(req, passwordRule) // validacion de cuerpo
 			if (bodyRes != true) await super.errorHandle(bodyRes)
 		}
 		next()

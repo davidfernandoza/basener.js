@@ -1,12 +1,12 @@
 'use strict'
-
 class Request {
-	constructor(SchemaBody, JoiValidator, CSRF) {
+	constructor(SchemaBody, JoiValidator, CSRF, JWTService) {
 		this.codeError = 'ERR400'
 		this.package = 'joi'
 		this.csrfToken = CSRF
 		this.joiValidator = JoiValidator
 		this.schemaBody = SchemaBody
+		this.JWTService = JWTService
 		this.schemaAuth = {
 			http_auth_token: JoiValidator.string().min(80).max(225).required()
 		}
@@ -52,6 +52,18 @@ class Request {
 			} else {
 				if (type == 'auth') {
 					rules = this.schemaAuth
+				}
+
+				// Validacion de token en webhook o web
+				if (type == 'web') {
+					const responseToken = await this.JWTService.decode(
+						req.csrfToken,
+						'token'
+					)
+					if (responseToken.status == 200) {
+						if (responseToken.payload.token === this.csrfToken) return true
+					}
+					return false
 				} else {
 					rules = this.schemaCsrf
 				}
