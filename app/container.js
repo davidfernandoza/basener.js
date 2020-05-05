@@ -94,7 +94,10 @@ const { ForgotPasswordDto, UsersDto, TokenBlackListDto } = require(join(
 /* -----------------------------------------------------*/
 /* Services: 																						*/
 /*------------------------------------------------------*/
-const { JWTService } = require(join(__dirname, './services'))
+const { JWTService, SmsService, MailService } = require(join(
+	__dirname,
+	'./services'
+))
 
 /* -----------------------------------------------------*/
 /* Registers for inyections:	 													*/
@@ -138,7 +141,9 @@ container
 	 * Services:
 	 */
 	.register({
-		JWTService: asClass(JWTService).singleton()
+		MailService: asClass(MailService).singleton(),
+		JWTService: asClass(JWTService).singleton(),
+		SmsService: asClass(SmsService).singleton()
 	})
 
 	/*

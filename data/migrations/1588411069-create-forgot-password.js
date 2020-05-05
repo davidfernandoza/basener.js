@@ -11,11 +11,13 @@ module.exports = {
 			users_id: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
+				unique: true,
 				references: { model: 'users', key: 'id' },
 				onUpdate: 'cascade',
 				onDelete: 'cascade'
 			},
-			token: { type: Sequelize.STRING, allowNull: false },
+			token: { type: Sequelize.STRING, allowNull: false, unique: true },
+			expiration: { type: Sequelize.DATE, allowNull: false },
 			created_at: { allowNull: false, type: Sequelize.DATE },
 			updated_at: { allowNull: false, type: Sequelize.DATE }
 		})

@@ -25,13 +25,17 @@ module.exports = ({
 		.use(bodyParser.json())
 		.use(compression())
 
-	// registrar las rutas
+	// registro de las rutas
 	apiRoute.use('/auth', AuthRoutes)
 	apiRoute.use('/users', UsersRoutes)
 	apiRoute.use('/forgot-password', ForgotPasswordRoutes)
 	routers.use('/api', apiRoute)
 
-	// Home
+	/* ----------------------------------------------------------------------	*/
+	/* Por defercto 																													*/
+	/* ----------------------------------------------------------------------	*/
+
+	// Home WEB
 	routers.use('/', (req, res, next) => {
 		const urlArray = req.path.split('/')
 		if (urlArray[1] == '') {
@@ -47,15 +51,10 @@ module.exports = ({
 	// Not Found 404
 	routers.use(req => {
 		const urlArray = req.path.split('/')
-
-		// WEB
 		if (urlArray[1] != 'api') {
-			throw new Error('404')
-		}
-
-		// API
-		else {
-			throw new Error('ERR404')
+			throw new Error('404') // WEB
+		} else {
+			throw new Error('ERR404') // API
 		}
 	})
 

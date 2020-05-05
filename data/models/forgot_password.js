@@ -13,9 +13,11 @@ module.exports = (sequelize, DataTypes) => {
 			users_id: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
+				unique: true,
 				isNumeric: true
 			},
-			token: { type: DataTypes.STRING, allowNull: false }
+			token: { type: DataTypes.STRING, allowNull: false, unique: true },
+			expiration: { type: DataTypes.DATE, allowNull: false }
 		},
 		{
 			timestamps: true,

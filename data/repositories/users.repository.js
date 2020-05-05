@@ -7,6 +7,9 @@ class UsersRepository extends Repository {
 		super(DB, UsersDto, Config, 'users')
 		this.db = DB
 	}
-	// Aqui van las consultas especializadas
+
+	async password(id, password) {
+		return await super.update(id, password, { password: 'password' })
+	}
 }
 module.exports = UsersRepository

@@ -5,11 +5,7 @@ const { Router } = require('express')
  * Rutas de los ForgotPassword:
  */
 
-module.exports = ({
-	ForgotPasswordController,
-	ForgotPasswordRequest,
-	UsersController
-}) => {
+module.exports = ({ ForgotPasswordController, ForgotPasswordRequest }) => {
 	const router = Router()
 
 	/*
@@ -21,7 +17,6 @@ module.exports = ({
 	 * Controller:
 	 */
 	const controller = ForgotPasswordController
-	const users = UsersController
 
 	/*
 	 * -----------------------------------------------------------------------------------*
@@ -29,7 +24,7 @@ module.exports = ({
 	 */
 
 	router.get('/:token', controller.index.bind(controller))
-	router.patch('/:token', password, users.recoverPassword.bind(users))
+	router.post('/:token', password, controller.recoverPassword.bind(controller))
 
 	return router
 }

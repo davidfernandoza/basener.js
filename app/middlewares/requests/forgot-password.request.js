@@ -4,17 +4,21 @@ const Request = require(join(__dirname, './request'))
 const { ErrorString } = require(join(__dirname, '../../strings'))
 let passwordRule = {}
 let body = {}
+let phoneRules = {}
 class ForgotPasswordRequest extends Request {
-	#config = {}
 	#errorString = {}
 
-	constructor({ JoiValidator, Config }) {
+	constructor({ JoiValidator, Config, JWTService }) {
 		body = {
 			email: JoiValidator.string()
 				.email({ ignoreLength: true })
 				.min(8)
 				.max(100)
 				.required()
+		}
+
+		phoneRules = {
+			phone: JoiValidator.string().min(6).max(10).required()
 		}
 
 		passwordRule = {
@@ -24,13 +28,24 @@ class ForgotPasswordRequest extends Request {
 				.required(),
 			csrfToken: JoiValidator.string().min(40).max(255).required()
 		}
-		super(body, JoiValidator, Config.CSRF_TOKEN)
-		this.#config = Config
+
+		super(body, JoiValidator, Config.CSRF_TOKEN, JWTService)
 		this.#errorString = new ErrorString()
+	}
+
+	async phone(req, res, next) {
+		const header = await super.header(req, 'csrf')
+		if (header != true) await super.errorHandle(header)
+		if (req.method == 'POST') {
+			const bodyRes = await super.body(req, phoneRules)
+			if (bodyRes != true) await super.errorHandle(bodyRes)
+		}
+		next()
 	}
 
 	// -------------------------------------------------------------------------
 
+	//  Validacion WEB
 	async password(req, res, next) {
 		if (req.method == 'POST') {
 			const bodyRes = await super.body(req, passwordRule) // validacion de cuerpo
@@ -45,9 +60,9 @@ class ForgotPasswordRequest extends Request {
 			// Validacion CSRF WEB
 			req.csrfToken = req.body.csrfToken
 			const validate = await super.header(req, 'web')
-			if (!validate) throw new Error('403')
+			if (validate) return next()
 		}
-		next()
+		throw new Error('403')
 	}
 }
 module.exports = ForgotPasswordRequest

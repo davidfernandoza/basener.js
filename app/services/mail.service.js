@@ -1,47 +1,50 @@
-// 'use strict'
+'use strict'
+const nodemailer = require('nodemailer')
+const hbs = require('nodemailer-express-handlebars')
 
-// // Requiere package:;
-// const path = require('path')
-// const nodemailer = require('nodemailer')
-// const env = require(path.join(__dirname, '../../config/env'))
-// const Console_Messages = require(path.join(__dirname,'./Console_Messages'))
-// const consoleMessages = new Console_Messages()
+class MailService {
+	#logo = 'https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/BeeProAgency/539628_520652/logo.png'
+	#config = {}
 
-// // Send messages to mail:
-// const Mail = (to, subject, text) => {
-// 	const options = nodemailer.createTransport({
-// 		service: 'gmail',
-// 		auth: {
-// 			user: env.email,
-// 			pass: env.passMail
-// 		},
-// 		tls: {
-// 			rejectUnauthorized: false
-// 		}
-// 	})
+	constructor({ Config }) {
+		this.#config = Config
+	}
 
-// 	const payload = {
-// 		from: env.company,
-// 		to: to,
-// 		subject: subject,
-// 		html: text
-// 	}
+	async send(emailOptios) {
+		try {
+			const transporter = nodemailer.createTransport({
+				host: this.#config.MAIL.HOST,
+				port: parseInt(this.#config.MAIL.PORT),
+				secure: this.#config.MAIL.SECURE == 'false' ? false : true,
+				auth: {
+					user: this.#config.MAIL.USER,
+					pass: this.#config.MAIL.PASSWORD
+				},
+				tls: {
+					rejectUnauthorized: this.#config.MAIL.TLS == 'false' ? false : true
+				}
+			})
 
-// 	// Send of mail.
-// 	options.sendMail(payload, err => {
-// 		if(err) {
+			const handlebarOptions = {
+				viewEngine: {
+					extName: '.hbs',
+					partialsDir: 'views/layouts/partials',
+					layoutsDir: 'views/templates',
+					defaultLayout: 'main.hbs'
+				},
+				viewPath: 'views/templates',
+				extName: '.hbs'
+			}
 
-// 			// Error handler:
-// 			const payloadLog = {
-// 				message: err.message, /* TODO: test message */
-// 				module: __filename,
-// 				line:	'27:29',
-// 				type:	'error'
-// 			}
-// 			consoleMessages.create(payloadLog)
-// 			return 500
-// 		}
-// 	})
-// }
+			// Templates Engine
+			transporter.use('compile', hbs(handlebarOptions))
+			emailOptios.context.logo = this.#logo
+			await transporter.sendMail(emailOptios)
 
-// module.exports = Mail
+			return true
+		} catch (error) {
+			return false
+		}
+	}
+}
+module.exports = MailService

@@ -3,9 +3,9 @@ const { join } = require('path')
 const Request = require(join(__dirname, './request'))
 
 class #2Request extends Request {
-	constructor({ JoiValidator, Config }) {
+	constructor({ JoiValidator, Config, JWTService }) {
 		const body = #4
-		super(body, JoiValidator, Config.CSRF_TOKEN)
+		super(body, JoiValidator, Config.CSRF_TOKEN, JWTService)
 	}
 }
 module.exports = #2Request

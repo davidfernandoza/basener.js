@@ -22,6 +22,7 @@ module.exports = {
 			rol: { type: Sequelize.ENUM('ADMIN', 'BASIC'), allowNull: false },
 			birthday: { type: Sequelize.DATE, allowNull: false },
 			range: { type: Sequelize.FLOAT, allowNull: false },
+			phone: { type: Sequelize.STRING, allowNull: false, unique: true },
 			status: { type: Sequelize.BOOLEAN, allowNull: false },
 			biography: { type: Sequelize.TEXT, allowNull: false },
 			created_at: { allowNull: false, type: Sequelize.DATE },

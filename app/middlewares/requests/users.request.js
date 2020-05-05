@@ -5,7 +5,7 @@ let body = {}
 let passwordRule = {}
 
 class UsersRequest extends Request {
-	constructor({ JoiValidator, Config }) {
+	constructor({ JoiValidator, Config, JWTService }) {
 		body = {
 			// table_id: JoiValidator.number()
 			// 	.integer()
@@ -19,6 +19,7 @@ class UsersRequest extends Request {
 				.min(8)
 				.max(100)
 				.required(),
+			phone: JoiValidator.string().min(8).max(15).required(),
 			password: JoiValidator.string().min(8).max(60).required(),
 			rol: JoiValidator.any().valid('ADMIN', 'BASIC').required(),
 			birthday: JoiValidator.date().required(),
@@ -35,7 +36,7 @@ class UsersRequest extends Request {
 				.required()
 		}
 
-		super(body, JoiValidator, Config.CSRF_TOKEN)
+		super(body, JoiValidator, Config.CSRF_TOKEN, JWTService)
 	}
 
 	async update(req, res, next) {

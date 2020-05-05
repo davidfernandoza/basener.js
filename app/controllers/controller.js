@@ -6,7 +6,6 @@ const { DoneString } = require(join(__dirname, '../strings'))
 
 class Controller {
 	#doneString = null
-	#app = ''
 
 	constructor(EntityRepository, EntityDto, StringHelper, Config) {
 		this.entityRepository = EntityRepository
@@ -14,7 +13,7 @@ class Controller {
 
 		if (Config) {
 			this.config = Config
-			this.#app = StringHelper.capitalize(Config.APP_NAME)
+			this.app = StringHelper.capitalize(Config.APP_NAME)
 		}
 
 		// Singleton manual
@@ -106,7 +105,7 @@ class Controller {
 		let { password } = req.body
 		const id = req.id
 		const transaction = !req.transaction ? null : req.transaction
-		const round = parseInt(this.config.SALT_CRYPT)
+		const round = parseInt(this.config.ENCRYPTION_SALT)
 		const salt = await bcrypt.genSalt(round)
 		password = await bcrypt.hash(password, salt)
 		const updated = await this.entityRepository.password(id, { password })
@@ -131,7 +130,7 @@ class Controller {
 
 		// Respuesta WEB
 		if (code == 'OK') {
-			entity.app = this.#app
+			entity.app = this.app
 			return res.render(entity.page, entity)
 		}
 

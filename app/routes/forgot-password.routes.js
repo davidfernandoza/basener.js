@@ -5,26 +5,14 @@ const { Router } = require('express')
  * Rutas de los ForgotPassword:
  */
 
-module.exports = ({
-	ForgotPasswordController,
-	ForgotPasswordRequest,
-	AdminPolitic,
-	BasicPolitic
-}) => {
+module.exports = ({ ForgotPasswordController, ForgotPasswordRequest }) => {
 	const router = Router()
 
 	/*
 	 * Request:
 	 */
 	const requestPublic = ForgotPasswordRequest.public.bind(ForgotPasswordRequest)
-
-	/*
-	 * Politics:
-	 */
-	const politics = [
-		AdminPolitic.validate.bind(AdminPolitic),
-		BasicPolitic.validate.bind(BasicPolitic)
-	]
+	const requestPhone = ForgotPasswordRequest.phone.bind(ForgotPasswordRequest)
 
 	/*
 	 * Controller:
@@ -33,15 +21,11 @@ module.exports = ({
 
 	/*
 	 * -----------------------------------------------------------------------------------*
-	 * GET:
+	 * POST:
 	 */
 
-	router.get(
-		'/:token',
-		requestPublic,
-		politics,
-		controller.get.bind(controller)
-	)
+	router.post('/email', requestPublic, controller.create.bind(controller))
+	router.post('/phone', requestPhone, controller.create.bind(controller))
 
 	return router
 }

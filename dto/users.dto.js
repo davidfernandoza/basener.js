@@ -14,6 +14,7 @@ class UsersDto extends Dto {
 			rol: 'rol',
 			birthday: 'birthday',
 			range: 'range',
+			phone: 'phone',
 			status: 'status',
 			biography: 'biography'
 		}

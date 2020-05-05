@@ -20,7 +20,9 @@ class JWTService {
 				sub: id,
 				token: secureToken,
 				iat: moment().unix(),
-				exp: moment().add(6, 'minutes').unix()
+				exp: moment()
+					.add(parseInt(this.#config.TOKEN_TIME_MINUTES), 'minutes')
+					.unix()
 			}
 		}
 		// seguridad de usuario
