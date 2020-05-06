@@ -1,13 +1,11 @@
 'use strict'
 const bcrypt = require('bcrypt')
-const { join } = require('path')
 const { morphism } = require('morphism')
-const { DoneString } = require(join(__dirname, '../strings'))
 
 class Controller {
 	#doneString = null
 
-	constructor(EntityRepository, EntityDto, StringHelper, Config) {
+	constructor(EntityRepository, EntityDto, StringHelper, Config, DoneString) {
 		this.entityRepository = EntityRepository
 		this.entityDto = EntityDto
 
@@ -18,7 +16,7 @@ class Controller {
 
 		// Singleton manual
 		if (!this.#doneString) {
-			this.#doneString = new DoneString()
+			this.#doneString = DoneString
 		}
 	}
 

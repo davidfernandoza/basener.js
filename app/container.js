@@ -104,8 +104,9 @@ const { JWTService, SmsService, MailService } = require(join(
 /*------------------------------------------------------*/
 const { DoneString, ErrorString, SmsString } = require(join(
 	__dirname,
-	'./strings'
+	'../helpers/strings'
 ))
+
 
 /* -----------------------------------------------------*/
 /* Registers for inyections:	 													*/

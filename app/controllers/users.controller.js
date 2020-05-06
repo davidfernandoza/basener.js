@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt')
 const Controller = require(join(__dirname, './controller'))
 
 class UsersController extends Controller {
-	constructor({ UsersRepository, UsersDto, Config, StringHelper }) {
-		super(UsersRepository, UsersDto, StringHelper, Config)
+	constructor({ UsersRepository, UsersDto, Config, StringHelper, DoneString }) {
+		super(UsersRepository, UsersDto, StringHelper, Config, DoneString)
 	}
 
 	async create(req, res) {

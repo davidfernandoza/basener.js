@@ -1,16 +1,14 @@
 'use strict'
-const { join } = require('path')
 const bcrypt = require('bcrypt')
 const { morphism } = require('morphism')
-const { DoneString } = require(join(__dirname, '../../strings'))
 
 class Auth {
-	constructor(EntityController, EntityDto, JWTService, DataEntity) {
+	constructor(EntityController, EntityDto, JWTService, DataEntity, DoneString) {
 		this.entityController = EntityController
 		this.dataEntity = DataEntity
 		this.JWTServices = JWTService
 		this.entityDto = EntityDto
-		this.doneString = new DoneString()
+		this.doneString = DoneString
 	}
 
 	async login(req, res) {

@@ -1,14 +1,13 @@
 'use strict'
 const { join } = require('path')
 const Request = require(join(__dirname, './request'))
-const { ErrorString } = require(join(__dirname, '../../strings'))
 let passwordRule = {}
 let body = {}
 let phoneRules = {}
 class ForgotPasswordRequest extends Request {
 	#errorString = {}
 
-	constructor({ JoiValidator, Config, JWTService }) {
+	constructor({ JoiValidator, Config, JWTService, ErrorString }) {
 		body = {
 			email: JoiValidator.string()
 				.email({ ignoreLength: true })
@@ -30,7 +29,7 @@ class ForgotPasswordRequest extends Request {
 		}
 
 		super(body, JoiValidator, Config.CSRF_TOKEN, JWTService)
-		this.#errorString = new ErrorString()
+		this.#errorString = ErrorString
 	}
 
 	async phone(req, res, next) {

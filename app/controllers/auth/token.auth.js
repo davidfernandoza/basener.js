@@ -11,10 +11,11 @@ class TokenAuth extends Controller {
 	constructor({
 		TokenBlackListRepository,
 		TokenBlackListDto,
-		JWTService,
-		StringHelper
+		StringHelper,
+		DoneString,
+		JWTService
 	}) {
-		super(TokenBlackListRepository, TokenBlackListDto, StringHelper)
+		super(TokenBlackListRepository, TokenBlackListDto, StringHelper, DoneString)
 		this.JWTServices = JWTService
 		this.tokenBlackListRepository = TokenBlackListRepository
 	}

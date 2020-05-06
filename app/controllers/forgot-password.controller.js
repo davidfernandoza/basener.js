@@ -18,13 +18,20 @@ class ForgotPasswordController extends Controller {
 		UsersController,
 		StringHelper,
 		MailService,
+		DoneString,
 		SmsService,
 		JWTService,
 		SmsString,
 		Config,
 		DB
 	}) {
-		super(ForgotPasswordRepository, ForgotPasswordDto, StringHelper, Config)
+		super(
+			ForgotPasswordRepository,
+			ForgotPasswordDto,
+			StringHelper,
+			Config,
+			DoneString
+		)
 		this.#usersController = UsersController
 		this.#JWTService = JWTService
 		this.#forgotPasswordRepository = ForgotPasswordRepository
