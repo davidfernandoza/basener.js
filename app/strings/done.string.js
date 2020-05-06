@@ -5,22 +5,22 @@ class DoneString {
 		this.DON200 = {
 			status: 200,
 			name: 'Ok',
-			message: 'Recurso entregado con exito'
+			message: 'Resource delivered successfully'
 		}
 		this.DON201 = {
 			status: 201,
 			name: 'Created',
-			message: 'Recurso creado con exito'
+			message: 'Resource created successfully'
 		}
 		this.DON204 = {
 			status: 204,
 			name: 'No Content',
-			message: 'Recurso eliminado/editado con exito'
+			message: 'Resource processed successfully'
 		}
 		this.DON404 = {
 			status: 404,
 			name: 'Not Found',
-			message: 'Recurso no encontrado'
+			message: 'Resource not found'
 		}
 	}
 }

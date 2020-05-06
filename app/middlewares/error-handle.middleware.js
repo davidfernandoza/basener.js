@@ -1,8 +1,6 @@
 /* eslint-disable indent */
 'use strict'
 // const axios = require('axios')
-const { join } = require('path')
-const { ErrorString } = require(join(__dirname, '../strings'))
 let errorObject = {}
 let code = 'ERR500'
 let codeweb = '500'
@@ -12,9 +10,9 @@ class ErrorHandleMiddleware {
 	#app = ''
 	#apiUrl = ''
 
-	constructor({ Config, StringHelper }) {
+	constructor({ Config, StringHelper, ErrorString }) {
 		this.config = Config
-		this.errorString = new ErrorString()
+		this.errorString = ErrorString
 		this.optionAxios = {
 			method: 'POST',
 			headers: {
@@ -30,7 +28,6 @@ class ErrorHandleMiddleware {
 		/*
 		 * Errores programados de api
 		 */
-		console.log(error.message)
 
 		if (error.message.length === 6) {
 			code = error.message

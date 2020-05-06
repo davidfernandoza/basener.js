@@ -9,6 +9,7 @@ class ForgotPasswordController extends Controller {
 	#JWTService = {}
 	#forgotPasswordRepository = {}
 	#mailService = {}
+	#smsString = {}
 	#smsService = {}
 
 	constructor({
@@ -19,6 +20,7 @@ class ForgotPasswordController extends Controller {
 		MailService,
 		SmsService,
 		JWTService,
+		SmsString,
 		Config,
 		DB
 	}) {
@@ -28,6 +30,7 @@ class ForgotPasswordController extends Controller {
 		this.#forgotPasswordRepository = ForgotPasswordRepository
 		this.#smsService = SmsService
 		this.#mailService = MailService
+		this.#smsString = SmsString
 
 		// paquete para transacciones en sequelize
 		this.#sequelize = DB.sequelize
@@ -76,6 +79,7 @@ class ForgotPasswordController extends Controller {
 				.add(parseInt(this.config.TOKEN_TIME_MINUTES), 'minutes')
 				.toISOString()
 		}
+		await super.deleteForAttribute('users_id', user.id)
 		await super.create(req, res)
 		const send = await this[user.sendType](cretedToken.payload.token, user)
 
@@ -165,6 +169,18 @@ class ForgotPasswordController extends Controller {
 
 	async sendSms(token, user) {
 		// await this.#smsService
+
+		let message = this.#smsString.MSG01.message.replace(/#1/g, this.app)
+		message = message.replace(
+			/#2/g,
+			`${this.config.DOMAIN}/recover-password/${token}`
+		)
+		const optionSms = {
+			to: user.phone,
+			body: message
+		}
+
+		return await this.#smsService.send(optionSms)
 	}
 }
 

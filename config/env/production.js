@@ -5,6 +5,7 @@ module.exports = {
 	APP_NAME: process.env.APP_NAME,
 	PORT: process.env.PORT,
 	CSRF_TOKEN: process.env.CSRF_TOKEN,
+	DOMAIN: process.env.DOMAIN,
 	BASE_URL: process.env.BASE_URL,
 	BASE_API: process.env.BASE_API,
 	ENCRYPTION_KEY_TOKEN: process.env.ENCRYPTION_KEY_TOKEN,
@@ -35,5 +36,10 @@ module.exports = {
 		SECURE: process.env.MAIL_SECURE,
 		TLS: process.env.MAIL_TLS,
 		EMAIL: process.env.MAIL_EMAIL
+	},
+	SMS: {
+		ID: process.env.SMS_TWILIO_ID,
+		TOKEN: process.env.SMS_TWILIO_TOKEN,
+		PHONE: process.env.SMS_TWILIO_PHONE
 	}
 }

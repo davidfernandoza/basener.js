@@ -6,33 +6,33 @@ class ErrorString {
 			status: 400,
 			name: 'Bad Request',
 			code: 'ERR400',
-			message: 'Consulta incorrecta'
+			message: 'Request created incorrectly'
 		}
 		this.ERR401 = {
 			status: 401,
 			name: 'Unauthorized',
 			code: 'ERR401',
-			message: 'No autorizado para solicitar recursos'
+			message: 'Not authorized to request resources'
 		}
 		this.ERR403 = {
 			status: 403,
 			name: 'Forbidden',
 			code: 'ERR403',
-			message: 'No existen los permisos suficientes'
+			message: 'There are not enough permissions'
 		}
 
 		this.ERR404 = {
 			status: 404,
 			name: 'Not Found',
 			code: 'ERR404',
-			message: 'Recurso no encontrado'
+			message: 'Resource not found'
 		}
 
 		this.ERR500 = {
 			status: 500,
 			name: 'Internal Server Error',
 			code: 'ERR500',
-			message: 'Error interno del servidor'
+			message: 'Something went wrong, try again later'
 		}
 	}
 }

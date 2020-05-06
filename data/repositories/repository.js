@@ -126,6 +126,19 @@ class Repository {
 		}
 	}
 
+	async deleteForAttribute(attribute, mach, transaction) {
+		try {
+			const result = await this.db[this.entity].destroy({
+				where: { [attribute]: mach },
+				transaction: transaction
+			})
+			if (result == 0) return null
+			return result
+		} catch (error) {
+			await this.errorHandle(error)
+		}
+	}
+
 	async deleteAts(entity) {
 		delete entity.created_at
 		delete entity.updated_at

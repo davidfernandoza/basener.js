@@ -100,6 +100,14 @@ const { JWTService, SmsService, MailService } = require(join(
 ))
 
 /* -----------------------------------------------------*/
+/* Strings: 																						*/
+/*------------------------------------------------------*/
+const { DoneString, ErrorString, SmsString } = require(join(
+	__dirname,
+	'./strings'
+))
+
+/* -----------------------------------------------------*/
 /* Registers for inyections:	 													*/
 /*------------------------------------------------------*/
 container
@@ -135,6 +143,15 @@ container
 	 */
 	.register({
 		StringHelper: asClass(StringHelper).singleton()
+	})
+
+	/*
+	 * Strings:
+	 */
+	.register({
+		DoneString: asClass(DoneString).singleton(),
+		ErrorString: asClass(ErrorString).singleton(),
+		SmsString: asClass(SmsString).singleton()
 	})
 
 	/*

@@ -101,6 +101,15 @@ class Controller {
 		await this.response(res, deleted, 'DON204', false)
 	}
 
+	async deleteForAttribute(attribut, match, transaction) {
+		transaction = !transaction ? null : transaction
+		return await this.entityRepository.deleteForAttribute(
+			attribut,
+			match,
+			transaction
+		)
+	}
+
 	async password(req, res) {
 		let { password } = req.body
 		const id = req.id

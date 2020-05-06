@@ -18,7 +18,7 @@ class ForgotPasswordRequest extends Request {
 		}
 
 		phoneRules = {
-			phone: JoiValidator.string().min(6).max(10).required()
+			phone: JoiValidator.string().min(6).max(15).required()
 		}
 
 		passwordRule = {
